@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0 (2026-10-17)
+
+- The hotkeys now cover 10 to 300 fps, up from 20 to 120. 10 is the lowest the add-on allows: slower than that, the frame generation mod takes the gaps between frames for a paused game and turns frame generation off.
+- Holding F9 or F11 speeds up after a moment, so crossing the wider range is quick.
+- Upgrading: if you keep your old `EnshroudedBaseCap.ini`, it still says `MinCap=20` and `MaxCap=120`. Change them to `10` and `300`, or take the new ini from the zip.
+
 ## 1.0.1 (2026-10-17)
 
 - The release zip now uses standard `/` folder paths, so 7-Zip, `unzip` and non-Windows tools extract the `EnshroudedBaseCap-docs` folder correctly. 1.0.0's zip stored them with backslashes; Windows Explorer handled it fine. The add-on itself is unchanged.

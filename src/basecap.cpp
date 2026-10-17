@@ -39,8 +39,8 @@ constexpr UINT_PTR kTimerHide = 2;
 struct Config {
     int cap = 40;  // 0 = off
     int step = 5;
-    int minCap = 20;
-    int maxCap = 120;
+    int minCap = 10;
+    int maxCap = 300;
     int keyDown = VK_F9;
     int keyUp = VK_F11;
     int keyToggle = 0;
@@ -104,8 +104,9 @@ void LoadConfig() {
     g_cfg.readout = ReadInt(L"ShowReadout", d.readout);
     g_cfg.readoutMs = ReadInt(L"ReadoutMs", d.readoutMs);
 
-    // Below 10 fps a single wait would outlast the frame-gen mod's 200 ms "presents
-    // stopped" check and it would tear DLSS-G down.
+    // Below 10 fps the gap between real frames gets close to the frame-gen mod's 200 ms
+    // "presents stopped" check (QuiesceNoPresentMs), and any hitch would make it tear
+    // DLSS-G down.
     if (g_cfg.minCap < 10) g_cfg.minCap = 10;
     if (g_cfg.maxCap < g_cfg.minCap) g_cfg.maxCap = g_cfg.minCap;
     if (g_cfg.maxCap > 1000) g_cfg.maxCap = 1000;
@@ -246,6 +247,7 @@ struct Key {
     int vk;
     bool down;
     ULONGLONG nextRepeat;
+    ULONGLONG pressedAt;
 };
 
 HWND g_readout;
@@ -273,10 +275,12 @@ bool Fired(Key& k, bool repeat) {
     bool fire = false;
     if (now && !k.down) {
         fire = true;
+        k.pressedAt = t;
         k.nextRepeat = t + 400;
     } else if (now && repeat && t >= k.nextRepeat) {
+        // Repeat faster once the key has been held a while, so the whole range is quick to cross.
         fire = true;
-        k.nextRepeat = t + 110;
+        k.nextRepeat = t + (t - k.pressedAt >= 1500 ? 40 : 110);
     }
     k.down = now;
     return fire;
@@ -372,7 +376,8 @@ void SetCapFromKey(int cap, HWND game) {
 }
 
 void OnTick() {
-    static Key down = {g_cfg.keyDown, false, 0}, up = {g_cfg.keyUp, false, 0}, toggle = {g_cfg.keyToggle, false, 0};
+    static Key down = {g_cfg.keyDown, false, 0, 0}, up = {g_cfg.keyUp, false, 0, 0},
+               toggle = {g_cfg.keyToggle, false, 0, 0};
     static LONGLONG fpsT;
     static uint64_t fpsN;
 

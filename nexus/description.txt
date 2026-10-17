@@ -65,10 +65,10 @@ Reflex stays on, which frame generation needs. The install script doesn't change
 [size=5][b]Controls[/b][/size]
 These keys work only while the game window has focus:
 [list]
-[*][b]F9[/b]: lower the cap by 5 (down to 20)
-[*][b]F11[/b]: raise the cap by 5 (up to 120). One more press turns the cap [b]off[/b], and F9 brings it back at 120.
+[*][b]F9[/b]: lower the cap by 5 (down to 10)
+[*][b]F11[/b]: raise the cap by 5 (up to 300). One more press turns the cap [b]off[/b], and F9 brings it back at 300.
 [/list]
-Hold a key to repeat. For two seconds, a readout at the top of the screen shows the new cap and the real frame rate. Your choice is saved and comes back next launch.
+Hold a key to repeat. It speeds up after a moment. For two seconds, a readout at the top of the screen shows the new cap and the real frame rate. Your choice is saved and comes back next launch.
 
 F10 is left alone on purpose: Windows treats it as the menu key, and it can freeze some games.
 
@@ -79,7 +79,7 @@ Settings are in EnshroudedBaseCap.ini, next to the game (defaults in brackets):
 [list]
 [*][b]BaseFpsCap[/b] (40): real frames per second. 0 turns the cap off. It's updated when you change the cap in game.
 [*][b]Step[/b] (5): how much one key press changes the cap.
-[*][b]MinCap / MaxCap[/b] (20 / 120): the range of the hotkeys. MinCap is never below 10.
+[*][b]MinCap / MaxCap[/b] (10 / 300): the range of the hotkeys. MinCap is never below 10: slower than that, the frame generation mod takes the gaps between frames for a paused game and turns frame generation off.
 [*][b]KeyDown / KeyUp[/b] (120 / 122): [url=https://learn.microsoft.com/windows/win32/inputdev/virtual-key-codes]virtual-key codes[/url]. 120 is F9 and 122 is F11.
 [*][b]KeyToggle[/b] (0): an optional key that turns the cap off and back on. 0 means no key.
 [*][b]WaitAfterPresent[/b] (0): 0 holds each real frame until its time slot, then hands it to frame generation. This gives the most even spacing and the smoothest result. 1 hands the frame over first, then waits before the game starts the next one: slightly less input lag, slightly less even spacing.

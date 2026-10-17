@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(EnshroudedBaseCap VERSION 1.0.1 LANGUAGES C CXX RC)
+project(EnshroudedBaseCap VERSION 1.1.0 LANGUAGES C CXX RC)
 
 if(NOT WIN32 OR NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
   message(FATAL_ERROR "EnshroudedBaseCap only builds as a 64-bit Windows DLL.")

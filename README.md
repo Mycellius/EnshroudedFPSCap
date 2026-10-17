@@ -74,10 +74,10 @@ These keys work only while the game window has focus:
 
 | Key | Action |
 |---|---|
-| **F9** | Lower the cap by 5 (down to 20) |
-| **F11** | Raise the cap by 5 (up to 120). One more press turns the cap **off**. F9 brings it back at 120 |
+| **F9** | Lower the cap by 5 (down to 10) |
+| **F11** | Raise the cap by 5 (up to 300). One more press turns the cap **off**. F9 brings it back at 300 |
 
-Hold a key to repeat. For two seconds, a readout at the top of the screen shows the new cap and the real frame rate. Your choice is saved and comes back next launch.
+Hold a key to repeat. It speeds up after a moment. For two seconds, a readout at the top of the screen shows the new cap and the real frame rate. Your choice is saved and comes back next launch.
 
 F10 is left alone on purpose: Windows treats it as the menu key and it can freeze some games.
 
@@ -89,7 +89,7 @@ On many laptops the F keys control brightness or volume by default. If F9/F11 do
 |---|---|---|
 | `BaseFpsCap` | `40` | Real frames per second. `0` turns the cap off. Updated when you change it in game. |
 | `Step` | `5` | How much one key press changes the cap. |
-| `MinCap` / `MaxCap` | `20` / `120` | Range of the hotkeys. `MinCap` is never below 10. |
+| `MinCap` / `MaxCap` | `10` / `300` | Range of the hotkeys. `MinCap` is never below 10: slower than that, the frame generation mod takes the gaps between frames for a paused game and turns frame generation off. |
 | `KeyDown` / `KeyUp` | `120` / `122` | [Virtual-key codes](https://learn.microsoft.com/windows/win32/inputdev/virtual-key-codes); 120 is F9, 122 is F11. |
 | `KeyToggle` | `0` | Optional key that turns the cap off and back on. `0` = no key. |
 | `WaitAfterPresent` | `0` | `0`: hold each real frame until its time slot, then hand it to frame generation. This gives the most even spacing and the smoothest result. `1`: hand the frame over first, then wait before the game starts the next one. Slightly less input lag, slightly less even spacing. |
