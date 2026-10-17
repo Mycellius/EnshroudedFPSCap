@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1 (2026-10-17)
+
+- The release zip now uses standard `/` folder paths, so 7-Zip, `unzip` and non-Windows tools extract the `EnshroudedBaseCap-docs` folder correctly. 1.0.0's zip stored them with backslashes; Windows Explorer handled it fine. The add-on itself is unchanged.
+
 ## 1.0.0 (2026-10-17)
 
 First release.

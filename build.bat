@@ -65,6 +65,8 @@ copy /y third_party\minhook\LICENSE.txt %STAGE%\EnshroudedBaseCap-docs\MinHook-L
 if not exist dist mkdir dist
 set "ZIP=dist\EnshroudedBaseCap-v!VER!.zip"
 if exist "!ZIP!" del "!ZIP!"
-powershell -NoProfile -Command "Compress-Archive -Path '%STAGE%\*' -DestinationPath '!ZIP!'" || exit /b 1
+rem Windows' bsdtar writes standard zips; Compress-Archive in Windows PowerShell
+rem stores folder paths with backslashes, which other unzip tools mangle.
+"%SystemRoot%\System32\tar.exe" -a -c -f "!ZIP!" -C %STAGE% EnshroudedBaseCap.dll EnshroudedBaseCap.ini install_basecap.bat uninstall_basecap.bat EnshroudedBaseCap-docs || exit /b 1
 echo Packaged !ZIP!
 exit /b 0
