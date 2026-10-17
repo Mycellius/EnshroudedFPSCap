@@ -1,0 +1,1 @@
+Caps Enshrouded's real frame rate before DLSS frame generation multiplies it. Set 40 and your GPU renders 40 real frames a second, while you still see 80 fps at 2x or 120 at 3x: less heat and fan noise, smooth motion. F9/F11 change the cap in game. Add-on for Biozilla's Enshrouded DLSS Frame Generation. Open source (MIT).

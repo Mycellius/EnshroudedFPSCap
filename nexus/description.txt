@@ -1,0 +1,152 @@
+[center][size=6][b]EnshroudedBaseCap[/b][/size]
+[size=4]A base FPS cap for frame generation[/size][/center]
+
+[b]Caps the frames Enshrouded really renders, before frame generation multiplies them.[/b]
+
+Set it to 40 and your GPU renders 40 real frames a second. You still see 80 fps at 2x frame generation, or 120 at 3x. You get less heat and fan noise, and motion stays smooth.
+
+It's an add-on for Biozilla's [url=https://www.nexusmods.com/enshrouded/mods/141]Enshrouded DLSS Frame Generation[/url] and does nothing without it.
+
+[img]https://raw.githubusercontent.com/Mycellius/EnshroudedFPSCap/main/docs/readout.png[/img]
+
+[line]
+
+[size=5][b]Why[/b][/size]
+Frame limiters in the NVIDIA Control Panel, the NVIDIA App or RTSS cap the [b]final[/b] frame rate, after frame generation. With 2x frame generation, a cap of 40 there leaves the game only 20 real frames a second, which feels sluggish.
+
+[code]
+Cap                          Frame gen   Real frames   You see
+NVIDIA Control Panel 40      2x          20            40
+NVIDIA Control Panel 40      3x          13            40
+EnshroudedBaseCap 40         2x          40            80
+EnshroudedBaseCap 40         3x          40            120
+[/code]
+
+Switching the multiplier with the frame generation mod's F7 key needs no other change. The real frame rate stays where you set it.
+
+[size=5][b]Requirements[/b][/size]
+[list]
+[*]Windows 10 (version 1803 or newer) or Windows 11, 64-bit
+[*]Enshrouded on Steam
+[*][url=https://www.nexusmods.com/enshrouded/mods/141]Enshrouded DLSS Frame Generation[/url], installed and working: you should see its readout when you press F8 in game.
+[list]
+[*]It needs an RTX 40 or 50 series GPU and [b]Anti-Aliasing set to DLSS[/b] in the game's graphics options.
+[*]RTX 40 owners need its MFGUnlocker.dll for 3x and above.
+[/list]
+[/list]
+
+[size=5][b]Install[/b][/size]
+[list=1]
+[*][b]Download[/b] the main file from the Files tab.
+[*][b]Open the game folder.[/b] In Steam, right-click Enshrouded → Manage → Browse local files. It's the folder that contains enshrouded.exe and EnshroudedVKFG.ini.
+[*][b]Extract everything from the zip into that folder[/b], next to enshrouded.exe.
+[*][b]Double-click install_basecap.bat.[/b] It adds EnshroudedBaseCap.dll to the Addons= line of EnshroudedVKFG.ini, which makes the frame generation mod load it. It saves a backup as EnshroudedVKFG.ini.bak-basecap and changes nothing else.
+[*][b]Turn off any other frame cap for Enshrouded.[/b] Otherwise it limits the final output on top of this cap.
+[list]
+[*]NVIDIA Control Panel: Manage 3D settings → Program Settings → Enshrouded → Max Frame Rate → Off
+[*]NVIDIA App: Graphics → Enshrouded → Max Frame Rate → Off
+[*]RivaTuner Statistics Server (RTSS): set the Enshrouded profile's Framerate limit to 0
+[/list]
+[*][b]Start the game and load a save.[/b] Press F8 to show the frame generation mod's readout. The real frame rate should sit at the cap (40 by default).
+[/list]
+
+[b]Install by hand instead of using the script:[/b]
+[spoiler]
+Copy EnshroudedBaseCap.dll and EnshroudedBaseCap.ini next to enshrouded.exe. Then open EnshroudedVKFG.ini in Notepad and add the add-on to the Addons= line, separated by a comma:
+[code]Addons=MFGUnlocker.dll,EnshroudedBaseCap.dll[/code]
+If you don't use MFGUnlocker, the line is just Addons=EnshroudedBaseCap.dll.
+[/spoiler]
+
+[size=4][b]Recommended: turn off Reflex Boost[/b][/size]
+The frame generation mod ships with ReflexMode=2 ("Low Latency + Boost"). Boost keeps the GPU clocked high whenever it's waiting on the CPU. With a frame cap it waits every frame, so it uses power and makes heat for nothing. In EnshroudedVKFG.ini, set:
+[code]ReflexMode=1[/code]
+Reflex stays on, which frame generation needs. The install script doesn't change this for you.
+
+[size=5][b]Controls[/b][/size]
+These keys work only while the game window has focus:
+[list]
+[*][b]F9[/b]: lower the cap by 5 (down to 20)
+[*][b]F11[/b]: raise the cap by 5 (up to 120). One more press turns the cap [b]off[/b], and F9 brings it back at 120.
+[/list]
+Hold a key to repeat. For two seconds, a readout at the top of the screen shows the new cap and the real frame rate. Your choice is saved and comes back next launch.
+
+F10 is left alone on purpose: Windows treats it as the menu key, and it can freeze some games.
+
+On many laptops the F keys control brightness or volume by default. If F9/F11 do that instead, hold Fn, turn on Fn-lock, or change the keys in the ini.
+
+[size=5][b]Settings[/b][/size]
+Settings are in EnshroudedBaseCap.ini, next to the game (defaults in brackets):
+[list]
+[*][b]BaseFpsCap[/b] (40): real frames per second. 0 turns the cap off. It's updated when you change the cap in game.
+[*][b]Step[/b] (5): how much one key press changes the cap.
+[*][b]MinCap / MaxCap[/b] (20 / 120): the range of the hotkeys. MinCap is never below 10.
+[*][b]KeyDown / KeyUp[/b] (120 / 122): [url=https://learn.microsoft.com/windows/win32/inputdev/virtual-key-codes]virtual-key codes[/url]. 120 is F9 and 122 is F11.
+[*][b]KeyToggle[/b] (0): an optional key that turns the cap off and back on. 0 means no key.
+[*][b]WaitAfterPresent[/b] (0): 0 holds each real frame until its time slot, then hands it to frame generation. This gives the most even spacing and the smoothest result. 1 hands the frame over first, then waits before the game starts the next one: slightly less input lag, slightly less even spacing.
+[*][b]ShowReadout[/b] (1): 0 hides the on-screen readout.
+[*][b]ReadoutMs[/b] (2000): how long the readout stays up, in milliseconds.
+[/list]
+The readout is a separate overlay window, like the frame generation mod's F8 readout. While either one is on screen, Windows pauses G-Sync/FreeSync. If that bothers you, set ShowReadout=0.
+
+[size=5][b]Uninstall[/b][/size]
+[list=1]
+[*]Close Enshrouded.
+[*]Double-click [b]uninstall_basecap.bat[/b] in the game folder. It removes EnshroudedBaseCap.dll from the Addons= line and deletes the add-on's files: the DLL, its ini and log, the backup, install_basecap.bat and the EnshroudedBaseCap-docs folder.
+[*]Delete uninstall_basecap.bat yourself.
+[/list]
+If you're removing the frame generation mod too, run uninstall_basecap.bat first. The frame generation mod's own uninstall_framegen.bat doesn't know about these files.
+
+[b]Uninstall by hand:[/b]
+[spoiler]
+In EnshroudedVKFG.ini, remove EnshroudedBaseCap.dll from the Addons= line (for example, back to Addons=MFGUnlocker.dll). Then delete EnshroudedBaseCap.dll, EnshroudedBaseCap.ini, EnshroudedBaseCap.log and EnshroudedVKFG.ini.bak-basecap.
+[/spoiler]
+
+[size=5][b]Troubleshooting[/b][/size]
+The add-on writes EnshroudedBaseCap.log next to the game each launch. A healthy log looks like this:
+[code]
+hooked sl.interposer.dll!vkQueuePresentKHR at 00007FFF666B6E20 (2890 ms after load)
+first real frame presented (thread 19840) - pacing is live, cap=40
+STATUS real_fps=40.0 cap=40 avg_wait=9.78ms
+[/code]
+avg_wait is how long each real frame was held back. If it's near 0, the game can't reach the cap on its own, and the add-on isn't slowing it down.
+
+[list]
+[*][b]No EnshroudedBaseCap.log[/b]: the frame generation mod didn't load the add-on. Check the Addons= line. Then look in EnshroudedVKFG.log for "loaded add-on EnshroudedBaseCap.dll", or for a "WARN add-on" line that explains why it didn't load.
+[*][b]The log says "FAIL sl.interposer.dll never loaded"[/b]: the frame generation mod isn't working. Get it working first (DLSS on in game, F8 readout visible).
+[*][b]Output fps is lower than cap × multiplier[/b]: another frame limiter is active (NVIDIA Control Panel, NVIDIA App, RTSS, V-Sync). Turn it off for Enshrouded.
+[*][b]Real fps stays below the cap[/b]: your GPU can't render that many frames at your settings. Lower the cap or your graphics settings.
+[*][b]F9 / F11 do nothing[/b]: the game window needs focus. On laptops, try Fn+F9 / Fn+F11, or change KeyDown / KeyUp.
+[*][b]The screen flickers when the readout shows[/b]: that's G-Sync pausing while an overlay is up. Set ShowReadout=0.
+[/list]
+If you report a problem in the Posts tab or on [url=https://github.com/Mycellius/EnshroudedFPSCap/issues]GitHub[/url], please include EnshroudedBaseCap.log and EnshroudedVKFG.log.
+
+[size=5][b]How it works[/b][/size]
+Enshrouded draws with Vulkan. The frame generation mod loads NVIDIA Streamline and sends every frame the game renders through vkQueuePresentKHR in Streamline's sl.interposer.dll. Streamline's DLSS-G plugin presents the generated frames on its own path, so they never pass through that function.
+
+EnshroudedBaseCap hooks that one function with MinHook. For each real frame, it waits until the frame's time slot comes up (25 ms apart at 40 fps) and then lets it through. The wait uses a high-resolution Windows timer and spins only for the last millisecond, so frames land within about ±0.3 ms of their slot. A late frame goes through immediately and starts a fresh schedule. It doesn't rush the following frames to catch up, because frame generation looks best with evenly spaced real frames.
+
+That one Streamline function is the only thing patched, and only in memory. Game files, game code, saves and network traffic are untouched. Game updates shouldn't break it unless the frame generation mod changes how it loads Streamline.
+
+[size=5][b]Tested with[/b][/size]
+[list]
+[*]RTX 4070 Laptop GPU, Windows 11 24H2, NVIDIA driver 617.42
+[*]Enshrouded 1.0 (Steam, Vulkan)
+[*]Enshrouded DLSS Frame Generation, build of 2026-10-15, with MFGUnlocker, at 2x and 3x
+[/list]
+
+[size=5][b]Source code[/b][/size]
+The full source, build instructions and an automated pacing test are on GitHub: [url=https://github.com/Mycellius/EnshroudedFPSCap]github.com/Mycellius/EnshroudedFPSCap[/url]. The file here is the release zip that GitHub Actions builds from that source.
+
+[size=5][b]AI disclosure[/b][/size]
+This mod was written with Claude Code, Anthropic's AI coding assistant. I directed and tested it. Details are in NOTICE.md, in the zip and on GitHub.
+
+[size=5][b]Credits[/b][/size]
+[list]
+[*][b]Biozilla[/b]: [url=https://www.nexusmods.com/enshrouded/mods/141]Enshrouded DLSS Frame Generation[/url], whose add-on loader makes this possible
+[*][b]Tsuda Kageyu[/b]: [url=https://github.com/TsudaKageyu/minhook]MinHook[/url]
+[*][b]NVIDIA[/b]: Streamline, DLSS and Reflex
+[*][b]Keen Games[/b]: Enshrouded
+[/list]
+
+[size=5][b]License[/b][/size]
+MIT. The software is provided as is, with no warranty, and the authors aren't liable for anything that comes of using it. This is an unofficial fan project, not affiliated with Keen Games, NVIDIA, Nexus Mods or Biozilla.
