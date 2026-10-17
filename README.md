@@ -1,6 +1,6 @@
-# EnshroudedBaseCap
+# EnshroudedBaseCap: base FPS cap for Enshrouded
 
-[![build](https://github.com/Mycellius/EnshroudedBaseCap/actions/workflows/build.yml/badge.svg)](https://github.com/Mycellius/EnshroudedBaseCap/actions/workflows/build.yml)
+[![build](https://github.com/Mycellius/enshroudedfpscap/actions/workflows/build.yml/badge.svg)](https://github.com/Mycellius/enshroudedfpscap/actions/workflows/build.yml)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 **A frame cap for Enshrouded that limits the frames the game really renders, before frame generation multiplies them.**
@@ -34,7 +34,7 @@ Switching the multiplier with the frame generation mod's F7 key needs no other c
 
 ## Install
 
-1. **Download** `EnshroudedBaseCap-vX.Y.Z.zip` from the [latest release](https://github.com/Mycellius/EnshroudedBaseCap/releases/latest).
+1. **Download** `EnshroudedBaseCap-vX.Y.Z.zip` from the [latest release](https://github.com/Mycellius/enshroudedfpscap/releases/latest).
 2. **Open the game folder.** In Steam, right-click Enshrouded → **Manage** → **Browse local files**. It's the folder that contains `enshrouded.exe` and `EnshroudedVKFG.ini`.
 3. **Extract everything from the zip into that folder**, next to `enshrouded.exe`.
 4. **Double-click `install_basecap.bat`.** It adds `EnshroudedBaseCap.dll` to the `Addons=` line of `EnshroudedVKFG.ini`, which makes the frame generation mod load it, and saves a backup as `EnshroudedVKFG.ini.bak-basecap`. It changes nothing else.
