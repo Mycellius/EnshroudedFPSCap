@@ -1,0 +1,26 @@
+#include <winver.h>
+#include "version.h"
+
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION BASECAP_VERSION_MAJOR,BASECAP_VERSION_MINOR,BASECAP_VERSION_PATCH,0
+PRODUCTVERSION BASECAP_VERSION_MAJOR,BASECAP_VERSION_MINOR,BASECAP_VERSION_PATCH,0
+FILEOS VOS_NT_WINDOWS32
+FILETYPE VFT_DLL
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "040904B0"
+    BEGIN
+      VALUE "ProductName", "EnshroudedBaseCap"
+      VALUE "FileDescription", "Base (pre-frame-generation) FPS cap add-on for EnshroudedVKFG"
+      VALUE "FileVersion", BASECAP_VERSION_STR
+      VALUE "ProductVersion", BASECAP_VERSION_STR
+      VALUE "OriginalFilename", "EnshroudedBaseCap.dll"
+      VALUE "LegalCopyright", "Copyright (c) 2026 Mycellius. MIT License."
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x0409, 1200
+  END
+END

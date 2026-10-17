@@ -1,0 +1,75 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  msvc:
+    name: MSVC (CMake)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Configure
+        run: cmake -S . -B build -A x64
+      - name: Build
+        run: cmake --build build --config Release
+      - name: Test
+        run: ctest --test-dir build -C Release --output-on-failure
+
+  llvm-mingw:
+    name: llvm-mingw (release build)
+    runs-on: windows-latest
+    env:
+      LLVM_MINGW_VERSION: '20261006'
+      LLVM_MINGW_SHA256: 317492c456aa27ee607a5919f1d2d38dcdc1112516a24d0bf4b00d078f52d17a
+    steps:
+      - uses: actions/checkout@v7
+      - name: Fetch llvm-mingw
+        shell: pwsh
+        run: |
+          $name = "llvm-mingw-$env:LLVM_MINGW_VERSION-ucrt-x86_64"
+          $zip = Join-Path $env:RUNNER_TEMP "$name.zip"
+          Invoke-WebRequest "https://github.com/mstorsjo/llvm-mingw/releases/download/$env:LLVM_MINGW_VERSION/$name.zip" -OutFile $zip
+          $hash = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLower()
+          if ($hash -ne $env:LLVM_MINGW_SHA256) { throw "llvm-mingw checksum mismatch: $hash" }
+          Expand-Archive $zip -DestinationPath $env:RUNNER_TEMP
+          "LLVM_MINGW=$(Join-Path $env:RUNNER_TEMP $name)" >> $env:GITHUB_ENV
+      - name: Build and test
+        shell: cmd
+        run: build.bat test
+      - name: Package
+        shell: cmd
+        run: build.bat dist
+      - uses: actions/upload-artifact@v7
+        with:
+          name: EnshroudedBaseCap
+          path: dist/*.zip
+          if-no-files-found: error
+
+  release:
+    name: Publish release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [msvc, llvm-mingw]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: EnshroudedBaseCap
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" EnshroudedBaseCap-*.zip \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "EnshroudedBaseCap $GITHUB_REF_NAME" \
+            --notes "Download **EnshroudedBaseCap-$GITHUB_REF_NAME.zip** below. Install and uninstall steps are in the [README](https://github.com/$GITHUB_REPOSITORY#install). Requires the Enshrouded DLSS Frame Generation mod (Nexus Mods, Enshrouded mod 141)." \
+            --generate-notes
